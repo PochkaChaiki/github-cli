@@ -1,5 +1,0 @@
-|=| CREATE
-| | READ
-| | UPDATE
-| | CLOSE THEMES? (ISSUES I think)
-| | Make the ability to open text editor to read and write issues

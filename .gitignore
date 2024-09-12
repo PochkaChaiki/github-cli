@@ -1,0 +1,4 @@
+*.txt
+secrets.conf
+/.vscode
+githubIssues
