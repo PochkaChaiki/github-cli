@@ -1,34 +1,16 @@
-package getissue
+package githubissues
 
 import (
 	"encoding/json"
 	"fmt"
-	getenvvars "githubIssues/internal/getEnvVars"
+	getenvvars "github-cli/internal/getEnvVars"
 	"net/http"
 	"strings"
-	"time"
 )
-
-const githubAPI = "https://api.github.com/repos"
-
-type User struct {
-	Login   string
-	HTMLURL string `json:"html_url"`
-}
-
-type Issue struct {
-	Number    int
-	HTMLURL   string `json:"html_url"`
-	Title     string
-	State     string
-	User      *User
-	CreatedAt time.Time `json:"created_at"`
-	Body      string
-}
 
 func GetListOfIssues(owner string, repo string) error {
 
-	req, err := http.NewRequest(http.MethodGet, strings.Join([]string{githubAPI, owner, repo, "issues"}, "/"), nil)
+	req, err := http.NewRequest(http.MethodGet, strings.Join([]string{getenvvars.GitHubAPI, owner, repo, "issues"}, "/"), nil)
 	if err != nil {
 		return fmt.Errorf("internal error: failed to create request: %v", err)
 	}
@@ -53,7 +35,7 @@ func GetListOfIssues(owner string, repo string) error {
 
 func GetIssue(owner string, repo string, number int) error {
 
-	req, err := http.NewRequest(http.MethodGet, strings.Join([]string{githubAPI, owner, repo, "issues", fmt.Sprint(number)}, "/"), nil)
+	req, err := http.NewRequest(http.MethodGet, strings.Join([]string{getenvvars.GitHubAPI, owner, repo, "issues", fmt.Sprint(number)}, "/"), nil)
 	if err != nil {
 		return fmt.Errorf("internal error: failed to create request: %v", err)
 	}

@@ -1,4 +1,4 @@
-module githubIssues
+module github-cli
 
 go 1.22.6
 

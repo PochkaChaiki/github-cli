@@ -10,7 +10,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var Owner, Repo string
+var owner, repo string
+var title, text string
+var number int
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -34,8 +36,8 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&Owner, "owner", "o", "", "Owner's name of the repo to create issue in one")
-	rootCmd.PersistentFlags().StringVarP(&Repo, "repo", "r", "", "Repo's name to create issue in one")
+	rootCmd.PersistentFlags().StringVarP(&owner, "owner", "o", "", "Owner's name of the repo to create issue in one")
+	rootCmd.PersistentFlags().StringVarP(&repo, "repo", "r", "", "Repo's name to create issue in one")
 	rootCmd.MarkPersistentFlagRequired("owner")
 	rootCmd.MarkPersistentFlagRequired("repo")
 	// Here you will define your flags and configuration settings.

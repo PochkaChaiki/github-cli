@@ -4,13 +4,11 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	createIssue "githubIssues/internal/createIssue"
+	githubissues "github-cli/internal/githubIssues"
 	"log"
 
 	"github.com/spf13/cobra"
 )
-
-var Title, Text string
 
 // createCmd represents the create command
 var createCmd = &cobra.Command{
@@ -18,7 +16,7 @@ var createCmd = &cobra.Command{
 	Short: "Create Issue",
 	Long:  `This command creates issue in owner's (flag -o) repo (flag -r)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		err := createIssue.CreateIssue(Owner, Repo, Title, Text)
+		err := githubissues.CreateIssue(owner, repo, title, text)
 		if err != nil {
 			log.Fatalf("Error while creating issue: %v", err)
 		}
@@ -26,7 +24,7 @@ var createCmd = &cobra.Command{
 }
 
 func init() {
-	createCmd.Flags().StringVarP(&Title, "title", "t", "Title", "Title for creating issue")
-	createCmd.Flags().StringVar(&Text, "text", "Initial text", "Body of the issue")
+	createCmd.Flags().StringVarP(&title, "title", "t", "Title", "Title for creating issue")
+	createCmd.Flags().StringVar(&text, "text", "Initial text", "Body of the issue")
 	rootCmd.AddCommand(createCmd)
 }

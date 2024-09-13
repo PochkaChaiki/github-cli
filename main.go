@@ -1,10 +1,9 @@
 /*
 Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-
 */
 package main
 
-import "githubIssues/cmd"
+import "github-cli/cmd"
 
 func main() {
 	cmd.Execute()
