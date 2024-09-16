@@ -1,3 +1,4 @@
 *.txt
 secrets.conf
 /.vscode
+github-cli

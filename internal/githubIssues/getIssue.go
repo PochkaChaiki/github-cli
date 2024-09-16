@@ -8,11 +8,11 @@ import (
 	"strings"
 )
 
-func GetListOfIssues(owner string, repo string) error {
+func GetListOfIssues(owner string, repo string) ([]IssueReturn, error) {
 
 	req, err := http.NewRequest(http.MethodGet, strings.Join([]string{getenvvars.GitHubAPI, owner, repo, "issues"}, "/"), nil)
 	if err != nil {
-		return fmt.Errorf("internal error: failed to create request: %v", err)
+		return nil, fmt.Errorf("internal error: failed to create request: %v", err)
 	}
 
 	req.Header.Add("Accept", "application/vnd.github+json")
@@ -20,24 +20,22 @@ func GetListOfIssues(owner string, repo string) error {
 	resp, err := (&http.Client{}).Do(req)
 	defer resp.Body.Close()
 	if err != nil {
-		return fmt.Errorf("internal error: failed to send request: %v", err)
+		return nil, fmt.Errorf("internal error: failed to send request: %v", err)
 	}
-	var IssuesResult []Issue
+	var IssuesResult []IssueReturn
 	err = json.NewDecoder(resp.Body).Decode(&IssuesResult)
 	if err != nil {
-		return fmt.Errorf("internal error: failed to decode json: %v", err)
+		return nil, fmt.Errorf("internal error: failed to decode json: %v", err)
 	}
-	for _, issue := range IssuesResult {
-		fmt.Printf("#%-5d %9.9s %.55s \n\t%s\n", issue.Number, issue.User.Login, issue.Title, issue.Body)
-	}
-	return nil
+
+	return IssuesResult, nil
 }
 
-func GetIssue(owner string, repo string, number int) error {
+func GetIssue(owner string, repo string, number int) (*IssueReturn, error) {
 
 	req, err := http.NewRequest(http.MethodGet, strings.Join([]string{getenvvars.GitHubAPI, owner, repo, "issues", fmt.Sprint(number)}, "/"), nil)
 	if err != nil {
-		return fmt.Errorf("internal error: failed to create request: %v", err)
+		return nil, fmt.Errorf("internal error: failed to create request: %v", err)
 	}
 
 	req.Header.Add("Accept", "application/vnd.github+json")
@@ -45,13 +43,12 @@ func GetIssue(owner string, repo string, number int) error {
 	resp, err := (&http.Client{}).Do(req)
 	defer resp.Body.Close()
 	if err != nil {
-		return fmt.Errorf("internal error: failed to send request: %v", err)
+		return nil, fmt.Errorf("internal error: failed to send request: %v", err)
 	}
-	var Issue Issue
+	var Issue IssueReturn
 	err = json.NewDecoder(resp.Body).Decode(&Issue)
 	if err != nil {
-		return fmt.Errorf("internal error: failed to decode json: %v", err)
+		return nil, fmt.Errorf("internal error: failed to decode json: %v", err)
 	}
-	fmt.Printf("#%-5d %9.9s %.55s \n\t%s\n", Issue.Number, Issue.User.Login, Issue.Title, Issue.Body)
-	return nil
+	return &Issue, nil
 }

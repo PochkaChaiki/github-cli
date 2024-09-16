@@ -1,9 +1,7 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
+	"fmt"
 	githubissues "github-cli/internal/githubIssues"
 	"log"
 
@@ -19,16 +17,22 @@ var getCmd = &cobra.Command{
 	Long:  `This command gets one issue by the number (-n flag) or list of issues (-l flag) and prints out.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if list {
-			err := githubissues.GetListOfIssues(owner, repo)
+			issuesResult, err := githubissues.GetListOfIssues(owner, repo)
 			if err != nil {
 				log.Fatalf("Error while getting issue: %v", err)
+			} else {
+				for _, issue := range issuesResult {
+					fmt.Printf("#%-5d %9.20s %.55s \n\t%s\n", issue.Number, issue.User.Login, issue.Title, issue.Body)
+				}
 			}
 		} else if number == 0 {
-			log.Fatalf("You have to add a number of issue. Try Again")
+			log.Println("You have to add a number of issue. Try Again")
 		} else {
-			err := githubissues.GetIssue(owner, repo, number)
+			issue, err := githubissues.GetIssue(owner, repo, number)
 			if err != nil {
 				log.Fatalf("Error while getting issue: %v", err)
+			} else {
+				fmt.Printf("#%-5d %9.20s %.55s \n\t%s\n", issue.Number, issue.User.Login, issue.Title, issue.Body)
 			}
 		}
 
