@@ -1,8 +1,10 @@
-# GITHUB-CLI INTRODUCTION
+# GITHUB-CLI INTRODUCTION #
 
 This CLI has functionality only to manage issues.
 The idea is borrowed from the task of Donovan's "The Go Programming Language"
+
 ---
+
 To build this project run following in main directory:
 
 ``` go build . ```
@@ -15,5 +17,5 @@ To run github-cli:
 
 ```./github-cli <command> -o <repo's owner> -r <repo name> <flags>```
 
-===
+---
 For CLI making is used Cobra framework.
