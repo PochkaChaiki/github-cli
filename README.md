@@ -1,5 +1,6 @@
 # GITHUB-CLI INTRODUCTION
 ===
+
 This CLI has functionality only to manage issues.
 The idea is borrowed from the task of Donovan's "The Go Programming Language"
 ---
