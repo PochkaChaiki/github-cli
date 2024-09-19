@@ -11,6 +11,8 @@ var title, text, milestone, stateReason, state, assignee string
 var assignees arrayOfStrings
 var number int
 
+var editor string
+
 func (l *arrayOfStrings) String() string {
 	return fmt.Sprintf("%v", *l)
 }

@@ -17,9 +17,19 @@ var updateCmd = &cobra.Command{
 		if number == 0 {
 			fmt.Println("You have to add a number of issue. Try Again")
 		}
+
+		var err error
+		if editor != "" {
+			text, err = CaptureInputFromEditor(editor)
+			if err != nil {
+				log.Fatalf("Error while updating issue: %v", err)
+				return
+			}
+		}
 		status, err := githubissues.UpdateIssue(owner, repo, number, title, text, assignee, assignees, state, stateReason, milestone)
 		if err != nil {
-			log.Fatalf("Error while creating issue: %v", err)
+			log.Fatalf("Error while updating issue: %v", err)
+			return
 		} else {
 			fmt.Printf("Status: %d\n", status)
 		}
@@ -27,6 +37,7 @@ var updateCmd = &cobra.Command{
 }
 
 func init() {
+	updateCmd.Flags().StringVar(&editor, "editor", "vim", "Editor to open to describe issue")
 	updateCmd.Flags().StringVarP(&title, "title", "t", "", "The title of an issue")
 	updateCmd.Flags().IntVarP(&number, "number", "n", 0, "The title of an issue")
 	updateCmd.Flags().StringVar(&text, "text", "", "Text that describes an issue")

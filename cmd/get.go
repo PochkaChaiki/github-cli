@@ -22,7 +22,7 @@ var getCmd = &cobra.Command{
 				log.Fatalf("Error while getting issue: %v", err)
 			} else {
 				for _, issue := range issuesResult {
-					fmt.Printf("#%-5d %9.20s %.55s \n\t%s\n", issue.Number, issue.User.Login, issue.Title, issue.Body)
+					printIssue(&issue)
 				}
 			}
 		} else if number == 0 {
@@ -32,7 +32,7 @@ var getCmd = &cobra.Command{
 			if err != nil {
 				log.Fatalf("Error while getting issue: %v", err)
 			} else {
-				fmt.Printf("#%-5d %9.20s %.55s \n\t%s\n", issue.Number, issue.User.Login, issue.Title, issue.Body)
+				printIssue(issue)
 			}
 		}
 
@@ -44,4 +44,15 @@ func init() {
 	getCmd.Flags().IntVarP(&number, "number", "n", 0, "Show issue with given number")
 	rootCmd.AddCommand(getCmd)
 
+}
+
+func printIssue(issue *githubissues.IssueReturn) {
+	fmt.Printf("#%-5d Author: %-20.20s Title: %-20.20q State: %-12.12s\nComment: %s\n", issue.Number, issue.User.Login, issue.Title, issue.State, issue.Body)
+	if issue.Assignees != nil {
+		fmt.Println("Assignees: ")
+		for _, assignee := range issue.Assignees {
+			fmt.Printf("\tLogin: %s\tURL: %s\n", assignee.Login, assignee.HTMLURL)
+		}
+		fmt.Println()
+	}
 }
